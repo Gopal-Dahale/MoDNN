@@ -19,32 +19,32 @@ all: main.o network.o $(layers) $(kernels) mnist.o data_loader.o vmm.o $(trainer
 	$(cc) $(CFLAGS) $(LDFLAGS) $(flags) -o test main.o network.o $(layers) $(kernels) $(trainers) mnist.o data_loader.o vmm.o utils.o $(nvidia_flags) 
 
 main.o: main.cu layers/layers.h mnist_dataset/mnist.h data_core/data_loader.h trainer/trainer.h
-	$(cc) -c $(CFLAGS) $(flags) main.cu
+	$(cc) -c $(CFLAGS) $(flags) main.cu $(nvidia_flags)
 
 network.o:  network.cu $(layer_headers) vmm/vmm.h
-	$(cc) -c $(CFLAGS) $(flags) network.cu
+	$(cc) -c $(CFLAGS) $(flags) network.cu $(nvidia_flags)
 
 $(layers): %.o: layers/%.cu layers/%.h
-	$(cc) -c $(CFLAGS) $(flags) $< -o $@
+	$(cc) -c $(CFLAGS) $(flags) $< -o $@ $(nvidia_flags)
 
 $(kernels): %.o: kernels/%.cu layers/layers.h
-	$(cc) -c $(CFLAGS) $(flags) $< -o $@
+	$(cc) -c $(CFLAGS) $(flags) $< -o $@ $(nvidia_flags)
 
 $(trainers): %.o: trainer/%.cu trainer/trainer.h
-	$(cc) -c $(CFLAGS) $(flags) $< -o $@
+	$(cc) -c $(CFLAGS) $(flags) $< -o $@ $(nvidia_flags)
 
-mnist.o : mnist_dataset/mnist.cpp mnist_dataset/mnist.h data_core/dataset.h
-	$(cc) -c $(CFLAGS) $(flags) mnist_dataset/mnist.cpp
+mnist.o : mnist_dataset/mnist.cpp mnist_dataset/mnist.h data_core/dataset.h 
+	$(cc) -c $(CFLAGS) $(flags) mnist_dataset/mnist.cpp $(nvidia_flags)
 
 data_loader.o : data_core/data_loader.cu data_core/data_loader.h
-	$(cc) -c $(CFLAGS) $(flags) data_core/data_loader.cu
+	$(cc) -c $(CFLAGS) $(flags) data_core/data_loader.cu $(nvidia_flags)
 
 vmm.o : vmm/vmm.cpp vmm/vmm.h
-	$(cc) -c $(CFLAGS) $(flags) vmm/vmm.cpp
+	$(cc) -c $(CFLAGS) $(flags) vmm/vmm.cpp $(nvidia_flags)
 
 
 utils.o : trainer/utils.cu trainer/trainer.h
-	$(cc) -c $(CFLAGS) $(flags) trainer/utils.cu
+	$(cc) -c $(CFLAGS) $(flags) trainer/utils.cu $(nvidia_flags)
 
 clean:
 	rm $(layers) $(kernels) test mnist.o data_loader.o vmm.o
