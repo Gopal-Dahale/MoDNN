@@ -8,7 +8,7 @@ trainers = full_mem_trainer.o min_mem_trainer.o prefetching_heuristic_half_windo
 
 cc = nvcc
 flags = -arch=sm_35 -std=c++11
-nvidia_flags = -lcudnn -lcublas
+nvidia_flags = -lcudnn -lcublas -lcuda -lcurand
 opencv_flags = -lopencv_imgcodecs -lopencv_imgproc -lopencv_core
 CFLAGS = -I$(CUDNN_INCDIR)
 LDFLAGS = -L$(CUDNN_LIBDIR) 
