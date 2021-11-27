@@ -89,7 +89,7 @@ ConvLayer::ConvLayer(cudnnHandle_t cudnn,
                             /*image_width=*/owidth));
 
     checkCUDNN(
-    cudnnGetConvolutionForwardAlgorithm_v7(cudnn,
+    cudnnGetConvolutionForwardAlgorithm(cudnn,
                                 input_descriptor,
                                 kernel_descriptor,
                                 convolution_descriptor,
@@ -119,7 +119,7 @@ ConvLayer::ConvLayer(cudnnHandle_t cudnn,
 
 
 
-    checkCUDNN(cudnnGetConvolutionBackwardFilterAlgorithm_v7(
+    checkCUDNN(cudnnGetConvolutionBackwardFilterAlgorithm(
     handle, input_descriptor, output_descriptor, convolution_descriptor, kernel_descriptor,
     CUDNN_CONVOLUTION_BWD_FILTER_PREFER_FASTEST, 0, &filter_algo));
 
@@ -135,7 +135,7 @@ ConvLayer::ConvLayer(cudnnHandle_t cudnn,
 
     //Data Backward Algorithm and workspace size
 
-    checkCUDNN(cudnnGetConvolutionBackwardDataAlgorithm_v7(
+    checkCUDNN(cudnnGetConvolutionBackwardDataAlgorithm(
     handle, kernel_descriptor, output_descriptor, convolution_descriptor, input_descriptor,
     CUDNN_CONVOLUTION_BWD_DATA_PREFER_FASTEST, 0, &data_algo));
 
