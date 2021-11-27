@@ -1,3 +1,2 @@
 *.json
-mnist_dataset/data/
 *.o
