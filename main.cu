@@ -21,8 +21,8 @@ int main(int argc, const char *argv[])
 
   // cudaSetDevice(0);
 
-  std::string images_file_str = "./data/train-images-idx3-ubyte";
-  std::string label_file_str = "./data/train-labels-idx1-ubyte";
+  std::string images_file_str = "./data/train-images.idx3-ubyte";
+  std::string label_file_str = "./data/train-labels.idx1-ubyte";
   char *images_file = (char *)images_file_str.c_str();
   char *label_file = (char *)label_file_str.c_str();
   std::cout << images_file << " " << label_file << std::endl;
