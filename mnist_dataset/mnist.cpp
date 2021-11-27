@@ -12,22 +12,6 @@ uint32_t reverseBits(uint32_t value)
          ((value >> 8) & 0X0000FF00) | (value >> 24);
 }
 
-int reverseInt(int n)
-{
-  const int bytes = 4;
-  unsigned char ch[bytes];
-  for (int i = 0; i < bytes; i++)
-  {
-    ch[i] = (n >> i * 8) & 255;
-  }
-  int p = 0;
-  for (int i = 0; i < bytes; i++)
-  {
-    p += (int)ch[i] << (bytes - i - 1) * 8;
-  }
-  return p;
-}
-
 MNIST::MNIST(char *images_filename, char *labels_filename, bool shuffle)
 {
   if (shuffle)
@@ -70,19 +54,16 @@ void MNIST::parse_images_file(char *images_file)
 {
   std::ifstream fd(images_file, std::ios::in | std::ios::binary);
   char data[4];
-
-  // read metadata
   unsigned int magic_number, rows, cols, i = 0;
   char pixel;
-  fd.read((char *)&magic_number, sizeof(magic_number));
-  magic_number = reverseInt(magic_number);
-  fd.read((char *)&dataset_size_, sizeof(dataset_size_));
-  dataset_size_ = reverseInt(dataset_size_);
   fd.read(data, sizeof(unsigned));
-  fd.read((char *)&rows, sizeof(rows));
-  rows = reverseInt(rows);
-  fd.read((char *)&cols, sizeof(cols));
-  cols = reverseInt(cols);
+  magic_number = reverseBits(*((unsigned int *)data));
+  fd.read(data, sizeof(unsigned));
+  dataset_size_ = reverseBits(*((unsigned int *)data));
+  fd.read(data, sizeof(unsigned));
+  rows = reverseBits(*((unsigned int *)data));
+  fd.read(data, sizeof(unsigned));
+  cols = reverseBits(*((unsigned int *)data));
   input_size_ = rows * cols;
   std::cout << input_size_ << " " << rows << " " << cols << " " << dataset_size_
             << std::endl;
